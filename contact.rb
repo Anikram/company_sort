@@ -7,18 +7,19 @@ class Contact
   def self.find(id)
     db = SQLite3::Database.open(@@SQLBASE)
 
+
     db.results_as_hash = true
-
-    result = ''
-
 
     if id
       # вывести записи удовлетворяющие условию
+
       result = db.execute('SELECT * FROM people WHERE company_id = ?',id)
+      #для версии 2:
       #1.добавить перевод хэша в класс
       #2.создать экземпляры класса по количеству людей
       #3.передать значение для вывода
-      puts result.to_s
+      puts result.class
+      show_people(result)
       abort 'программа не доделана'
     else
       # вывести таблицу companies
@@ -31,11 +32,10 @@ class Contact
       abort
     end
 
-    return person
   end
 
 
-  def load_data(data_hash)
+  def load_data(data_hash) # метод не задействован (проект)
     puts data_hash["rowid"].to_s
     @rowid = data_hash["rowid"].to_s
     @name = data_hash["name"].to_s
@@ -44,7 +44,7 @@ class Contact
     @email = data_hash["email"].to_s
   end
 
-  def self.show_companies(db) # метод не задействован (проект)
+  def self.show_companies(db)
     # метод ля отбражения перечная компаний
     db.results_as_hash = true
 
@@ -67,5 +67,15 @@ class Contact
       end
       puts
     end
+  end
+
+  def self.show_people(result)
+
+    puts result.class
+    result.each do |line|
+      puts line
+      puts
+    end
+
   end
 end
